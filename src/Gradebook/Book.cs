@@ -4,11 +4,12 @@ using System.Collections.Generic;
 
 namespace Gradebook
 {
-    class Book
+    public class Book
     {
-        public Book()
+        public Book(string name)
         {
             grades = new List<double>();
+            this.name = name;
         }
 
         public void addGrade(double grade)
@@ -16,27 +17,33 @@ namespace Gradebook
             grades.Add(grade);
         }
 
-        public void showStatistics()
+        // public void showStatistics(Statistics stats)
+        // {
+        //     Console.WriteLine($"The average grade is {stats.Average:N2}");
+        //     Console.WriteLine($"The lowest grade is {stats.Low:N2}");
+        //     Console.WriteLine($"The highest grade is {stats.High:N2}");
+        // }
+
+        public Statistics getStatistics() // return a statistics object 
         {
-            var result = 0.0;
-            var highGrade = double.MinValue;
-            var lowGrade = double.MaxValue;
+            var result = new Statistics();
+            result.Average = 0.0;
+            result.High = double.MinValue;
+            result.Low = double.MaxValue;
+
             foreach (double grade in grades)
             {
-                lowGrade = Math.Min(grade, lowGrade);
-                highGrade = Math.Max(grade, highGrade);
-                result += grade; // number + number
+                result.Low = Math.Min(grade, result.Low);
+                result.High = Math.Max(grade, result.High);
+                result.Average += grade; // number + number
 
             }
 
-            var average = result / grades.Count;
-
-            Console.WriteLine("The result is " + result);
-            Console.WriteLine($"The average grade is {average:N2}");
-            Console.WriteLine($"The lowest grade is {lowGrade:N2}");
-            Console.WriteLine($"The highest grade is {highGrade:N2}");
+            result.Average/= grades.Count;
+            return result;
 
         }
         private List<double> grades;
+        private String name;
     }
 }
